@@ -146,7 +146,7 @@ public class Array_02 {
         // Test cases for all operations
 
         // Test isArraySorted
-        int[] sortedArr = {1, 2, 3, 4};
+//        int[] sortedArr = {1, 2, 3, 4};
         int[] unsortedArr = {1, 3, 2, 32};
         System.out.println("Is array sorted? " + isArraySorted(unsortedArr));
 
