@@ -156,6 +156,184 @@ public class Array_Revison {
 
 
 
+    /**
+     * Merges overlapping intervals
+     * Time Complexity: O(n log n), Space Complexity: O(n)
+     * @param intervals Array of intervals to merge
+     * @return Array of merged intervals
+     */
+
+    public static int[][] merge(int [][] intervals){
+        if(intervals.length <=1){
+            return intervals;
+        }
+
+        //sort intervals based on start time
+        Arrays.sort(intervals, (a,b)-> Integer.compare(a[0],b[0]));
+
+        List<int []> merged = new ArrayList<>();
+        int [] current = intervals[0];
+
+        merged.add(current);
+
+        for(int [] interval : intervals) {
+
+            int currentEnd = current[1];
+            int nextStart = interval[0];
+            int nextEnd = interval[1];
+
+            if (currentEnd >= nextStart) {
+                current[1] = Math.max(currentEnd, nextEnd);
+            } else {
+                current = interval;
+                merged.add(current);
+            }
+
+        }
+
+        return merged.toArray(new int[merged.size()][]);
+    }
+
+
+    /**
+     * Computes product of array except self for each element
+     * Time Complexity: O(n), Space Complexity: O(n)
+     * @param nums The input array
+     * @return Array where each element is product of all elements except itself
+     */
+    public static int [] productExceptSelf(int [] nums){
+
+        //Array to Store the all left multiplication
+        int [] left = new int[nums.length];
+
+        //Array to store all right multiplication
+        int [] right = new int[nums.length];
+
+        left[0] =1;
+        for(int i=1; i<nums.length ;i++){
+            left[i] = left[i-1] * nums[i-1];
+        }
+
+        right[nums.length - 1] = 1;
+        for(int i = nums.length -2 ; i>-1;i--){
+            right[i] = right[i+1] * nums[i+1];
+        }
+
+        int [] ans = new int[nums.length];
+        for(int i=0 ; i<nums.length ;i++){
+            ans[i] = left[i] * right[i];
+        }
+
+        return ans;
+    }
+
+
+    /**
+     * Sorts array of 0s, 1s and 2s (Dutch National Flag problem)
+     * Time Complexity: O(n), Space Complexity: O(1)
+     * @param arr The input array to sort
+     */
+    public static void swap(int [] arr , int i , int j ){
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+    public static void sortColors(int [] arr){
+        int low = 0 ;
+        int mid = 0;
+        int high = arr.length-1;
+
+        while(mid<=high){
+            if(arr[mid] == 0){
+                swap(arr,low,mid);
+                low++;
+                mid++;
+            }else if(arr[mid]==1){
+                mid++;
+            } else if (arr[mid]==2) {
+                swap(arr,mid,high);
+                high--;
+            }
+        }
+    }
+
+
+    /**
+     * Moves all zeros to the end while maintaining relative order of other elements
+     * Time Complexity: O(n), Space Complexity: O(1)
+     * @param nums The input array
+     */
+    public static void moveZeros(int [] nums){
+
+        int insertPos = 0;
+
+        for(int i= 0 ; i< nums.length ; i++){
+
+            if(nums[i] != 0){
+                nums[insertPos] = nums[i];
+                insertPos++;
+            }
+        }
+
+        while (insertPos<nums.length){
+            nums[insertPos++] = 0;
+        }
+
+    }
+
+
+
+
+    /**
+     * Finds majority element (appears more than n/2 times) using Moore's Voting Algorithm
+     * Time Complexity: O(n), Space Complexity: O(1)
+     * @param nums The input array
+     * @return The majority element
+     */
+
+    public static int majorityElement(int [] nums){
+        int majority = nums[0] , votes = 1;
+
+        for(int i =1 ; i< nums.length ; i++){
+
+            if(votes == 0){
+                votes++;
+                majority = nums[i];
+            }else if(majority == nums[i]){
+                votes++;
+            }else {
+                votes--;
+            }
+        }
+        return majority;
+    }
+
+
+
+    /**
+     * Calculates maximum profit from buying and selling stock (single transaction)
+     * Time Complexity: O(n), Space Complexity: O(1)
+     * @param prices Array of daily stock prices
+     * @return Maximum possible profit
+     */
+
+    public static int maxProfit(int[] prices){
+        int maxProfit = 0;
+        int n = prices.length;
+        int minSoFar = prices[0];
+
+
+        for(int i = 0 ; i< n ; i++){
+            minSoFar = Math.min(minSoFar,prices[i]);
+            int profit = prices[i] - minSoFar;
+            maxProfit = Math.max(maxProfit, profit);
+        }
+
+        return maxProfit;
+    }
+
+
     public static void main(String[] args) {
         // Test largest element
         int[] arr = {3, 5, 2, 8, 1};
@@ -187,6 +365,68 @@ public class Array_Revison {
         for (List<Integer> triplet : result) {
             System.out.println(triplet);
         }
+
+
+        // Sample input: overlapping intervals
+        int[][] intervals = {
+                {1, 3},
+                {2, 6},
+                {8, 10},
+                {15, 18}
+        };
+
+        int[][] merged = merge(intervals);
+
+        // Print the result
+        for (int[] interval : merged) {
+            System.out.println(Arrays.toString(interval));
+        }
+
+
+        int [] productInput = {3,4,6,1,2};
+        int [] result1 = productExceptSelf(productInput);
+        System.out.println("Product Except Self:");
+        for (int val : result1) {
+            System.out.print(val + " ");
+        }
+
+        System.out.println();
+
+        int [] arr5 = {2,0,2,1,1,0};
+        sortColors(arr5);
+        System.out.println("Sort colors:");
+        for (int val :arr5) {
+            System.out.print(val + " ");
+        }
+
+        System.out.println();
+
+        int [] arr6 = {2,0,2,1,1,0};
+        moveZeros(arr6);
+        System.out.println("Move Zeros:");
+        for (int val :arr6) {
+            System.out.print(val + " ");
+        }
+
+
+        System.out.println();
+
+        int [] arr7 = {2,1,2,4,2,2,1,1};
+        int result4 = majorityElement(arr7);
+        System.out.println("Majority Element is " + result4);
+
+
+        System.out.println();
+
+        int [] arr8 = {7,1,5,3,6,4};
+        int maxprofit = maxProfit(arr8);
+        System.out.println("Maximum profit : " + maxprofit);
+
+
+
+
+
+
     }
 }
 
