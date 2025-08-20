@@ -107,7 +107,7 @@ public class Sliding_Window {
     // ===================================================
     // 5. First Negative Integer in Every Window of Size k
     // ===================================================
-    public static List<Integer> firstNegInt(int arr[], int k) {
+    public static List<Integer> firstNegInt(int [] arr, int k) {
         int n = arr.length;
         List<Integer> result = new ArrayList<>();
         Deque<Integer> deque = new ArrayDeque<>(); // store indices of negatives
